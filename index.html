@@ -1,127 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PokeAPI</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="script.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        margin: 0;
+      [data-theme="dark"] {
+        --primary: #e53935;
+        --primary-hover: #f44336;
+        --primary-focus: rgba(229, 57, 53, 0.25);
+        --primary-inverse: #fff;
       }
 
-      .container {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        padding: 20px;
-        max-width: 400px;
-        width: 100%;
+      /* Red (Common styles) */
+      :root {
+        --form-element-active-border-color: var(--primary);
+        --form-element-focus-color: var(--primary-focus);
+        --switch-color: var(--primary-inverse);
+        --switch-checked-background-color: var(--primary);
       }
 
-      .card {
-        text-align: center;
-      }
+      .imagen {
+        /* Estilo base para la imagen */
+        .pokemon-image {
+          max-width: 100%;
+          height: auto;
+          display: block;
+          margin: 0 auto;
+          width: 50%; /* Tamaño base para pantallas más grandes */
+          max-height: 35vh; /* Altura máxima basada en el viewport height (vh) */
+        }
 
-      .card img {
-        max-width: 128px;
-        border: 2px solid #333;
-        border-radius: 50%;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      }
-
-      .media-left img {
-        max-width: 48px;
-        border: 2px solid #333;
-        border-radius: 50%;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-      }
-
-      .title.is-4 {
-        font-size: 1.5rem;
-        margin-bottom: 5px;
-      }
-
-      .subtitle.is-6 {
-        font-size: 1rem;
-        color: #888;
-      }
-
-      .content h2 {
-        font-size: 1.2rem;
-        color: #333;
-        margin-bottom: 5px;
-      }
-
-      .content h3 {
-        font-size: 1rem;
-      }
-
-      /* Estilos para la barra de búsqueda */
-      .search-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-
-      .search-input {
-        flex-grow: 1;
-        padding: 10px;
-        border: 1px solid #333;
-        border-radius: 5px;
-        font-size: 1rem;
-      }
-
-      .search-button {
-        background-color: #333;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        padding: 10px 20px;
-        cursor: pointer;
-        font-size: 1rem;
+        /* Media query para pantallas más pequeñas (por ejemplo, dispositivos móviles) */
+        @media (max-width: 768px) {
+          .pokemon-image {
+            width: 50%; /* Tamaño ajustado para dispositivos móviles */
+            max-height: 50vh; /* Altura máxima ajustada */
+          }
+        }
       }
     </style>
+    <script src="script.js"></script>
   </head>
   <body>
     <div class="container">
-      <div class="card">
-        <div class="search-bar">
+      <article>
+        <div>
           <input
             type="text"
-            class="search-input"
-            placeholder="Buscar Pokémon"
+            placeholder="Pokemon..."
+            value=""
+            id="pokemonToSearch"
+            onkeypress="handleKeyPress(event)"
           />
-          <button class="search-button">Buscar</button>
         </div>
-        <div class="card-image">
-          <img src="" id="photo" alt="Pokemon Image" />
+
+        <div>
+          <button onclick="searchPokemon()">Search</button>
         </div>
-        <div class="card-content">
-          <div class="media">
-            <div class="media-content">
-              <p class="title is-4" id="name"></p>
-              <p class="subtitle is-6" id="pokemonNumber"></p>
-            </div>
-          </div>
-          <div class="content">
+      </article>
+
+      <article style="text-align: center">
+        <img id="photo" class="imagen" />
+
+        <h1 id="name"></h1>
+
+        <h5 id="pokemonNumber"></h5>
+      </article>
+
+      <article>
+        <div class="grid">
+          <div>
             <h2>Stats:</h2>
+
             <h3 id="stats"></h3>
           </div>
-          <div class="content">
-            <h2>Tipos:</h2>
+          <div>
+            <h2>Type:</h2>
             <h3 id="types"></h3>
           </div>
         </div>
-      </div>
+      </article>
     </div>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
   </body>
 </html>

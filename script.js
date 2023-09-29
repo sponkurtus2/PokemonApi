@@ -1,15 +1,56 @@
-const ApiURl = "https://pokeapi.co/api/v2/pokemon/rayquaza";
-
 const fetchData = async () => {
   try {
-    const response = await fetch(ApiURl);
-    const data = await response.json();
+    var pokemonToSearch = document
+      .getElementById("pokemonToSearch")
+      .value.trim();
 
-    showPokemon(data);
+    if (pokemonToSearch === "") {
+      Toastify({
+        text: "Por favor, ingresa un nombre de Pokémon.",
+        duration: 1000,
+        gravity: "top",
+        position: "right",
+        close: true,
+        style: {
+          background: "linear-gradient(to right, #ffdb4a, #ffcd00)",
+          color: "#333",
+        },
+      }).showToast();
+    } else {
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/pokemon/${pokemonToSearch}`
+      );
+
+      if (response.status === 404) {
+        // Capturamos el error cuando la respuesta es un 404 (Not Found)
+        Toastify({
+          text: "¡Pokemon no encontrado!",
+          duration: 1000,
+          gravity: "top",
+          position: "right",
+          close: true,
+          style: {
+            background: "linear-gradient(to right, #ffdb4a, #ffcd00)",
+            color: "#333",
+          },
+        }).showToast();
+      } else {
+        const data = await response.json();
+
+        if (data.name) {
+          showPokemon(data);
+        }
+      }
+    }
   } catch (error) {
     console.log(error);
   }
 };
+function handleKeyPress(event) {
+  if (event.key === "Enter") {
+    searchPokemon();
+  }
+}
 
 const showPokemon = (data) => {
   // Nombre
@@ -47,3 +88,10 @@ const showPokemon = (data) => {
 };
 
 fetchData();
+
+function searchPokemon() {
+  var pokemonToSearch = document.getElementById("pokemonToSearch").value;
+  var correctName = pokemonToSearch.toLowerCase();
+  ApiURl = `https://pokeapi.co/api/v2/pokemon/${correctName}`;
+  fetchData();
+}
