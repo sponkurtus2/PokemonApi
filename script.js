@@ -2,7 +2,8 @@ const fetchData = async () => {
   try {
     var pokemonToSearch = document
       .getElementById("pokemonToSearch")
-      .value.trim();
+      .value.toLowerCase()
+      .trim();
 
     if (pokemonToSearch === "") {
       Toastify({
